@@ -55,7 +55,7 @@ model = load_model('..\\pretrained models\\DeepFakesON-Phys_CelebDF_V2.h5')
 # print(model.summary())
 # input("Press Enter to continue...")
 
-image_path = r"D:\Pattern_Letters_HR_PAD\BBDD\3DMAD"
+image_path = "../real-videos/"
 carpeta_deep= os.path.join(image_path, "DeepFrames")
 carpeta_raw= os.path.join(image_path, "RawFrames")
 
@@ -64,6 +64,10 @@ test_data2, images_names = load_test_attention(carpeta_raw)
 
 test_data = np.array(test_data, copy=False, dtype=np.float32)
 test_data2 = np.array(test_data2, copy=False, dtype=np.float32)
+test_data = np.reshape(test_data, (test_data.shape[0], 36, 36, 3))
+print(test_data.shape)
+test_data2 = np.reshape(test_data2, (test_data2.shape[0], 36, 36, 3))
+print(test_data2.shape)
 
 predictions = model.predict([test_data, test_data2], batch_size=batch_size, verbose=1)
 bufsize = 1
@@ -77,3 +81,6 @@ for i in range(predictions.shape[0]):
     # elif float(predictions[i])>1:
         # predictions[i]='1'
     fichero_scores.write(";%s\n" % predictions[i]) #scores predichas
+fichero_scores.close()
+
+print("Done")	

@@ -6,27 +6,32 @@ import cv2
 
 
 
-image_path = 'D:\\Pattern_Letters_HR_PAD\\BBDD\\3DMAD\\session03\\'
+image_path = '../../Real-videos/'
 image_name_video = []
 # Load the cascade
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 for f in [f for f in os.listdir(image_path)]:
+    print(f)
     
-    if not("_C.avi" in f): #OULU
+    if not(".mp4" in f): #OULU
         continue
     
     carpeta= os.path.join(image_path, f)
+    print(carpeta)
     cap = cv2.VideoCapture(carpeta)
     frame_rate = cap.get(cv2.CAP_PROP_FPS)
     nFrames = cap.get(7)
     max_frames = int(nFrames)
-    ruta_parcial = os.path.join('D:\\Pattern_Letters_HR_PAD\\BBDD\\3DMAD\\DeepFrames',f) 
+    ruta_parcial = os.path.join('../real-videos/DeepFrames',f) 
     if not(os.path.exists(ruta_parcial)) :
         os.mkdir(ruta_parcial);
-    ruta_parcial2 = os.path.join('D:\\Pattern_Letters_HR_PAD\\BBDD\\3DMAD\\RawFrames',f) 
+    ruta_parcial2 = os.path.join('../real-videos/RawFrames',f) 
     if not(os.path.exists(ruta_parcial2)) :
         os.mkdir(ruta_parcial2);
+    ruta_parcial3 = os.path.join('../real-videos/FaceFrames',f)
+    if not(os.path.exists(ruta_parcial3)) :
+        os.mkdir(ruta_parcial3);
     
     L = 36
     C_R=np.empty((L,L,max_frames))
@@ -73,6 +78,7 @@ for f in [f for f in os.listdir(image_path)]:
             
        
         face = cv2.resize(face, (L,L), interpolation = cv2.INTER_AREA)
+        cv2.imwrite(os.path.join(ruta_parcial3, str(ka)+'.png'), face)
         # cv2.imshow('img', face)
         # cv2.waitKey()
         C_R[:,:,ka] = face[:,:,0]
